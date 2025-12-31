@@ -1,6 +1,9 @@
 # Ignore schemas directory
 schemas/
 
+# ignore testings
+test_simulator.py
+
 # Python
 __pycache__/
 *.py[cod]
@@ -50,3 +53,8 @@ htmlcov/
 *.pickle
 data/
 logs/
+
+# Other files
+CLAUDE.md
+BUG_FIXES_SUMMARY.md
+PHASE_1_CHECKLIST.md
