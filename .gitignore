@@ -54,7 +54,6 @@ htmlcov/
 data/
 logs/
 
-# Other files
-CLAUDE.md
-BUG_FIXES_SUMMARY.md
-PHASE_1_CHECKLIST.md
+# Markdown files (except README.md)
+*.md
+!README.md

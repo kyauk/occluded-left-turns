@@ -66,9 +66,9 @@ class SceneGeometry():
     # ---------
     far_road = Rect(x_min=-math.inf, x_max=math.inf, y_min=4,y_max=6)
     near_road = Rect(x_min=-math.inf, x_max=math.inf, y_min=2,y_max=4)
-    near_cross = Rect(x_min=-2, x_max=0, y_min=1,y_max=2)
-    far_cross_near = Rect(x_min=-3, x_max=-2, y_min=2,y_max=3)
-    far_cross_far = Rect(x_min=-3, x_max=-2, y_min=3,y_max=6)
+    near_cross = Rect(x_min=-3, x_max=0, y_min=-3,y_max=2)  # Longer (extends to y=-3) and wider (3 units)
+    far_cross_near = Rect(x_min=-4, x_max=-3, y_min=2,y_max=3)
+    far_cross_far = Rect(x_min=-4, x_max=-3, y_min=3,y_max=6)
     
     def turn_path(self) -> list[tuple[float, Vector]]:
         """
@@ -106,7 +106,7 @@ class SceneGeometry():
         """
         path = self.turn_path()
 
-        # Negative time is a logic error - path starts when TURN is chosen
+        # time can not be negative
         if t < 0:
             raise ValueError(f"Time t={t} cannot be negative. Turn path starts at t=0.")
 
@@ -114,7 +114,7 @@ class SceneGeometry():
         if t <= path[0][0]:
             return path[0][1]
 
-        # After path ends - continue straight at final segment velocity
+        # after turn path ends - continue straight at final segment velocity
         if t >= path[-1][0]:
             # Compute velocity from last segment
             t_last = path[-1][0]
@@ -127,14 +127,14 @@ class SceneGeometry():
                 y=(pos_last.y - pos_prev.y) / (t_last - t_prev)
             )
 
-            # Extrapolate position beyond final waypoint
+            # extrapolate the position beyond final waypoint
             dt_extra = t - t_last
             return Vector(
                 x=pos_last.x + velocity.x * dt_extra,
                 y=pos_last.y + velocity.y * dt_extra
             )
 
-        # Find bracketing waypoints
+        # in between waypoints
         for i in range(len(path) - 1):
             t0, pos0 = path[i]
             t1, pos1 = path[i + 1]
